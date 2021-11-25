@@ -9,7 +9,7 @@ const ohif = {
 };
 
 const clock = {
-  panel: "simple.extension.panelModule.clockPanel",
+  panel: "extension.clock.panelModule.clockPanel",
 };
 
 export default function mode({ modeConfiguration }) {
