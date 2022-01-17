@@ -1,6 +1,6 @@
 {
-  "name": "@ohif/mode-clock",
-  "version": "0.0.1",
+  "name": "@ohif-test/mode-clock",
+  "version": "1.0.1",
   "description": "A test mode for installation demonstration",
   "author": "OHIF",
   "license": "MIT",
@@ -20,9 +20,8 @@
     "access": "public"
   },
   "scripts": {
-    "dev": "cross-env NODE_ENV=development webpack --config .webpack/webpack.dev.js --watch --debug --output-pathinfo",
     "dev:cornerstone": "yarn run dev",
-    "build": "cross-env NODE_ENV=production webpack --config .webpack/webpack.prod.js",
+    "build": "cross-env NODE_ENV=production webpack --config ./webpack.prod.js",
     "build:package": "yarn run build",
     "start": "yarn run dev",
     "test:unit": "jest --watchAll",
@@ -32,10 +31,20 @@
     "@ohif/core": "^2.12.3"
   },
   "dependencies": {
-    "@babel/runtime": "7.7.6"
+    "@babel/runtime": "7.7.6",
+    "dotenv": "^14.1.0"
   },
   "devDependencies": {
-    "webpack": "^5.50.0",
-    "webpack-merge": "^5.7.3"
+    "@babel/core": "^7.0.0-beta.51",
+    "clean-webpack-plugin": "^4.0.0",
+    "babel-eslint": "^8.0.3",
+    "eslint": "^5.0.1",
+    "copy-webpack-plugin": "^10.2.0",
+    "cross-env": "^7.0.3",
+    "uglifyjs-webpack-plugin": "^1.2.7",
+    "webpack": "^4.12.2",
+    "webpack-cli": "^3.0.8",
+    "babel-loader": "^8.0.0-beta.4",
+    "eslint-loader": "^2.0.0"
   }
 }

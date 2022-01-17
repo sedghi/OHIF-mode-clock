@@ -1,5 +1,4 @@
 import toolbarButtons from "./toolbarButtons.js";
-import { hotkeys } from "@ohif/core";
 
 const ohifDefault = {
     layout: "org.ohif.default.layoutTemplateModule.viewerLayout",
@@ -15,15 +14,23 @@ const clock = {
     panel: "extension.clock.panelModule.clockPanel"
 };
 
-export default function mode({ modeConfiguration }) {
+const id = "clock";
+const extensionDependencies = [
+    "org.ohif.default",
+    "org.ohif.cornerstone",
+    "extension.clock"
+];
+
+function modeFactory({ modeConfiguration }) {
     return {
-        id: "clock",
-        displayName: "Basic Viewer",
+        id,
+        displayName: "Clock",
         /**
          * Lifecycle hooks
          */
         onModeEnter: ({ servicesManager, extensionManager }) => {
             const { ToolBarService } = servicesManager.services;
+
             ToolBarService.init(extensionManager);
             ToolBarService.addButtons(toolbarButtons);
             ToolBarService.createButtonSection("primary", ["Time"]);
@@ -56,15 +63,17 @@ export default function mode({ modeConfiguration }) {
                 }
             }
         ],
-        extensions: [
-            "org.ohif.default",
-            "org.ohif.cornerstone",
-            "extension.clock"
-        ],
+        extensions: extensionDependencies,
         hangingProtocols: [ohifDefault.hangingProtocols],
         sopClassHandlers: [ohifDefault.sopClassHandler],
-        hotkeys: [...hotkeys.defaults.hotkeyBindings]
+        hotkeys: []
     };
 }
 
-window.clockMode = mode({});
+const mode = {
+    id,
+    modeFactory,
+    extensionDependencies
+};
+
+export default mode;
