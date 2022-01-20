@@ -40,7 +40,12 @@ function modeFactory({ modeConfiguration }) {
             study: [],
             series: []
         },
-        isValidMode: () => {},
+        isValidMode: ({ modalities }) => {
+            const modalities_list = modalities.split("\\");
+
+            // Slide Microscopy modality not supported by clock mode yet
+            return !modalities_list.includes("SM");
+        },
         routes: [
             {
                 path: "clock",
