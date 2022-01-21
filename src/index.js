@@ -19,12 +19,12 @@ const clock = {
 // for version -> process.env.npm_package_version
 // For extension Dependencies, can at least get the versions from process.env.npm_package_peerDependencies
 const id = "@ohif-test/mode-clock"; //
-const version = "1.0.15";
+const version = "1.0.16";
 const extensionDependencies = {
     // Can derive the versions at least process.env.from npm_package_version
     "@ohif/extension-default": "^1.0.1",
     "@ohif/extension-cornerstone": "^3.0.0",
-    "@ohif-test/extension-clock": "^1.0.6"
+    "@ohif-test/extension-clock": "^1.0.7"
 };
 
 function modeFactory({ modeConfiguration }) {
