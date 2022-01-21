@@ -1,29 +1,36 @@
 import toolbarButtons from "./toolbarButtons.js";
 
 const ohifDefault = {
-    layout: "org.ohif.default.layoutTemplateModule.viewerLayout",
-    sopClassHandler: "org.ohif.default.sopClassHandlerModule.stack",
-    hangingProtocols: "org.ohif.default.hangingProtocolModule.default"
+    layout: "@ohif/extension-default.layoutTemplateModule.viewerLayout",
+    sopClassHandler: "@ohif/extension-default.sopClassHandlerModule.stack",
+    hangingProtocols: "@ohif/extension-default.hangingProtocolModule.default"
 };
 
 const ohifCornerstone = {
-    viewport: "org.ohif.cornerstone.viewportModule.cornerstone"
+    viewport: "@ohif/extension-cornerstone.viewportModule.cornerstone"
 };
 
 const clock = {
-    panel: "extension.clock.panelModule.clockPanel"
+    panel: "@ohif-test/extension-clock.panelModule.clockPanel"
 };
 
-const id = "clock";
-const extensionDependencies = [
-    "org.ohif.default",
-    "org.ohif.cornerstone",
-    "extension.clock"
-];
+// TODO -> We should inject these with webpack from the package.json
+// for id -> process.env.npm_package_name
+// for version -> process.env.npm_package_version
+// For extension Dependencies, can at least get the versions from process.env.npm_package_peerDependencies
+const id = "@ohif-test/mode-clock"; //
+const version = "1.0.13";
+const extensionDependencies = {
+    // Can derive the versions at least process.env.from npm_package_version
+    "@ohif/extension-default": "^1.0.1",
+    "@ohif/extension-cornerstone": "^3.0.0",
+    "@ohif-test/extension-clock": "^1.0.4"
+};
 
 function modeFactory({ modeConfiguration }) {
     return {
         id,
+        version,
         displayName: "Clock",
         /**
          * Lifecycle hooks
@@ -77,6 +84,7 @@ function modeFactory({ modeConfiguration }) {
 
 const mode = {
     id,
+    version,
     modeFactory,
     extensionDependencies
 };
