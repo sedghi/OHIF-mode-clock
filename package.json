@@ -1,6 +1,6 @@
 {
   "name": "@ohif-test/mode-clock",
-  "version": "1.0.9",
+  "version": "1.0.16",
   "description": "A test mode for installation demonstration",
   "author": "OHIF",
   "license": "MIT",
@@ -31,7 +31,9 @@
     "test:unit:ci": "jest --ci --runInBand --collectCoverage --passWithNoTests"
   },
   "peerDependencies": {
-    "@ohif-test/extension-clock": "1.0.2",
+    "@ohif-test/extension-clock": "1.0.7",
+    "@ohif/extension-default": "^1.0.1",
+    "@ohif/extension-cornerstone": "^3.0.0",
     "@ohif/core": "^2.12.3"
   },
   "dependencies": {
