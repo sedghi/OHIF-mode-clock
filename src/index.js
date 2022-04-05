@@ -1,12 +1,15 @@
 import toolbarButtons from './toolbarButtons.js';
+import { id, version } from './id';
 
-const ohifDefault = {
+const ohif = {
   layout: '@ohif/extension-default.layoutTemplateModule.viewerLayout',
   sopClassHandler: '@ohif/extension-default.sopClassHandlerModule.stack',
   hangingProtocols: '@ohif/extension-default.hangingProtocolModule.default',
+  leftPanel: '@ohif/extension-default.panelModule.seriesList',
+  rightPanel: '@ohif/extension-default.panelModule.measure',
 };
 
-const ohifCornerstone = {
+const cornerstone = {
   viewport: '@ohif/extension-cornerstone.viewportModule.cornerstone',
 };
 
@@ -14,26 +17,32 @@ const clock = {
   panel: '@ohif-test/extension-clock.panelModule.clockPanel',
 };
 
-// TODO -> We should inject these with webpack from the package.json
-// for id -> process.env.npm_package_name
-// for version -> process.env.npm_package_version
-// For extension Dependencies, can at least get the versions from process.env.npm_package_peerDependencies
-const id = '@ohif-test/mode-clock'; //
-const version = '1.0.20';
+/**
+ * Just two dependencies to be able to render a viewport with panels in order
+ * to make sure that the mode is working.
+ */
 const extensionDependencies = {
-  // Can derive the versions at least process.env.from npm_package_version
-  '@ohif/extension-default': '^1.0.1',
+  '@ohif/extension-default': '^3.0.0',
   '@ohif/extension-cornerstone': '^3.0.0',
-  '@ohif-test/extension-clock': '^1.0.10',
 };
 
 function modeFactory({ modeConfiguration }) {
   return {
+    /**
+     * Mode ID, which should be unique among modes used by the viewer. This ID
+     * is used to identify the mode in the viewer's state.
+     */
     id,
     version,
-    displayName: 'Clock',
+    routeName: 'clock',
     /**
-     * Lifecycle hooks
+     * Mode name, which is displayed in the viewer's UI in the workList, for the
+     * user to select the mode.
+     */
+    displayName: 'Clock Mode',
+    /**
+     * Runs when the Mode Route is mounted to the DOM. Usually used to initialize
+     * Services and other resources.
      */
     onModeEnter: ({ servicesManager, extensionManager }) => {
       const { ToolBarService } = servicesManager.services;
@@ -42,30 +51,46 @@ function modeFactory({ modeConfiguration }) {
       ToolBarService.addButtons(toolbarButtons);
       ToolBarService.createButtonSection('primary', ['Time']);
     },
+    /**
+     * Runs when the Mode Route is unmounted from the DOM. Usually used to clean
+     * up resources and states
+     */
     onModeExit: () => {},
+    /** */
     validationTags: {
       study: [],
       series: [],
     },
-    isValidMode: ({ modalities }) => {
-      const modalities_list = modalities.split('\\');
-
-      // Slide Microscopy modality not supported by clock mode yet
-      return !modalities_list.includes('SM');
-    },
+    /**
+     * A boolean return value that indicates whether the mode is valid for the
+     * modalities of the selected studies. For instance a PET/CT mode should be
+     */
+    isValidMode: ({ modalities }) => true,
+    /**
+     * Mode Routes are used to define the mode's behavior. A list of Mode Route
+     * that includes the mode's path and the layout to be used. The layout will
+     * include the components that are used in the layout. For instance, if the
+     * default layoutTemplate is used (id: '@ohif/extension-default.layoutTemplateModule.viewerLayout')
+     * it will include the leftPanels, rightPanels, and viewports. However, if
+     * you define another layoutTemplate that includes a Footer for instance,
+     * you should provide the Footer component here too. Note: We use Strings
+     * to reference the component's ID as they are registered in the internal
+     * ExtensionManager. The template for the string is:
+     * `${extensionId}.{moduleType}.${componentId}`.
+     */
     routes: [
       {
         path: 'clock',
         layoutTemplate: ({ location, servicesManager }) => {
           return {
-            id: ohifDefault.layout,
+            id: ohif.layout,
             props: {
               leftPanels: [],
               rightPanels: [clock.panel],
               viewports: [
                 {
-                  namespace: ohifCornerstone.viewport,
-                  displaySetsToDisplay: [ohifDefault.sopClassHandler],
+                  namespace: cornerstone.viewport,
+                  displaySetsToDisplay: [ohif.sopClassHandler],
                 },
               ],
             },
@@ -74,15 +99,14 @@ function modeFactory({ modeConfiguration }) {
       },
     ],
     extensions: extensionDependencies,
-    hangingProtocols: [ohifDefault.hangingProtocols],
-    sopClassHandlers: [ohifDefault.sopClassHandler],
+    hangingProtocols: [ohif.hangingProtocols],
+    sopClassHandlers: [ohif.sopClassHandler],
     hotkeys: [],
   };
 }
 
 const mode = {
   id,
-  version,
   modeFactory,
   extensionDependencies,
 };
