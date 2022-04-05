@@ -1,5 +1,5 @@
-const id = 'my-mode';
+const id = '@ohif-test/mode-clock';
 
-const version = '0.0.1';
+const version = '3.0.2';
 
 export { id, version };
