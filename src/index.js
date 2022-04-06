@@ -1,30 +1,30 @@
-import toolbarButtons from './toolbarButtons.js';
-import { id, version } from './id';
+import toolbarButtons from "./toolbarButtons.js"
+import { id } from "./id"
 
 const ohif = {
-  layout: '@ohif/extension-default.layoutTemplateModule.viewerLayout',
-  sopClassHandler: '@ohif/extension-default.sopClassHandlerModule.stack',
-  hangingProtocols: '@ohif/extension-default.hangingProtocolModule.default',
-  leftPanel: '@ohif/extension-default.panelModule.seriesList',
-  rightPanel: '@ohif/extension-default.panelModule.measure',
-};
+  layout: "@ohif/extension-default.layoutTemplateModule.viewerLayout",
+  sopClassHandler: "@ohif/extension-default.sopClassHandlerModule.stack",
+  hangingProtocols: "@ohif/extension-default.hangingProtocolModule.default",
+  leftPanel: "@ohif/extension-default.panelModule.seriesList",
+  rightPanel: "@ohif/extension-default.panelModule.measure",
+}
 
 const cornerstone = {
-  viewport: '@ohif/extension-cornerstone.viewportModule.cornerstone',
-};
+  viewport: "@ohif/extension-cornerstone.viewportModule.cornerstone",
+}
 
 const clock = {
-  panel: '@ohif-test/extension-clock.panelModule.clockPanel',
-};
+  panel: "@ohif-test/extension-clock.panelModule.clockPanel",
+}
 
 /**
  * Just two dependencies to be able to render a viewport with panels in order
  * to make sure that the mode is working.
  */
 const extensionDependencies = {
-  '@ohif/extension-default': '^3.0.0',
-  '@ohif/extension-cornerstone': '^3.0.0',
-};
+  "@ohif/extension-default": "^3.0.0",
+  "@ohif/extension-cornerstone": "^3.0.0",
+}
 
 function modeFactory({ modeConfiguration }) {
   return {
@@ -33,23 +33,22 @@ function modeFactory({ modeConfiguration }) {
      * is used to identify the mode in the viewer's state.
      */
     id,
-    version,
-    routeName: 'clock',
+    routeName: "clock",
     /**
      * Mode name, which is displayed in the viewer's UI in the workList, for the
      * user to select the mode.
      */
-    displayName: 'Clock Mode',
+    displayName: "Clock Mode",
     /**
      * Runs when the Mode Route is mounted to the DOM. Usually used to initialize
      * Services and other resources.
      */
     onModeEnter: ({ servicesManager, extensionManager }) => {
-      const { ToolBarService } = servicesManager.services;
+      const { ToolBarService } = servicesManager.services
 
-      ToolBarService.init(extensionManager);
-      ToolBarService.addButtons(toolbarButtons);
-      ToolBarService.createButtonSection('primary', ['Time']);
+      ToolBarService.init(extensionManager)
+      ToolBarService.addButtons(toolbarButtons)
+      ToolBarService.createButtonSection("primary", ["Time"])
     },
     /**
      * Runs when the Mode Route is unmounted from the DOM. Usually used to clean
@@ -80,7 +79,7 @@ function modeFactory({ modeConfiguration }) {
      */
     routes: [
       {
-        path: 'clock',
+        path: "clock",
         layoutTemplate: ({ location, servicesManager }) => {
           return {
             id: ohif.layout,
@@ -94,7 +93,7 @@ function modeFactory({ modeConfiguration }) {
                 },
               ],
             },
-          };
+          }
         },
       },
     ],
@@ -102,13 +101,13 @@ function modeFactory({ modeConfiguration }) {
     hangingProtocols: [ohif.hangingProtocols],
     sopClassHandlers: [ohif.sopClassHandler],
     hotkeys: [],
-  };
+  }
 }
 
 const mode = {
   id,
   modeFactory,
   extensionDependencies,
-};
+}
 
-export default mode;
+export default mode

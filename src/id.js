@@ -1,6 +1,5 @@
-import packageJson from '../package.json';
+import packageJson from "../package.json"
 
-const id = packageJson.name;
-const version = packageJson.version;
+const id = packageJson.name
 
-export { id, version };
+export { id }
